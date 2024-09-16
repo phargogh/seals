@@ -21,7 +21,7 @@ returned = setup(
         "rasterio",
         "scipy",
     ],
-    name='seals_cython_functions',
+    name='seals',
     packages=["seals"],
     include_dirs=[numpy.get_include()],
     cmdclass={'build_ext': build_ext},
