@@ -12,6 +12,15 @@ ext_modules = [
 ]
 
 returned = setup(
+    install_requires=[
+        "gdal",
+        "hazelbean",
+        "matplotlib",
+        "numpy",
+        "pandas",
+        "rasterio",
+        "scipy",
+    ],
     name='seals_cython_functions',
     packages=["seals"],
     include_dirs=[numpy.get_include()],
