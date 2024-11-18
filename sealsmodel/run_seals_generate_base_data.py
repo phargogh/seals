@@ -1,7 +1,6 @@
-import os
 import hazelbean as hb
 
-import seals_generate_base_data
+from . import seals_generate_base_data
 
 p = hb.ProjectFlow('../../projects/seals_generate_base_data_mosaic_is_natural')
 p.esa_years_to_convert = [2015]
@@ -21,4 +20,3 @@ p.lulc_convolutions_task.run = 0
 
 if __name__ == '__main__':
     p.execute()
-

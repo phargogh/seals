@@ -1,12 +1,13 @@
+import multiprocessing
 import os
+
+import geopandas as gpd
 import hazelbean as hb
 import numpy as np
 import pandas as pd
-import multiprocessing
 from matplotlib import pyplot as plt
-import geopandas as gpd
 
-import seals_utils
+from . import seals_utils
 
 L = hb.get_logger()
 
@@ -54,7 +55,7 @@ def luh2_extraction(p):
 
         for base_year in p.base_years:
 
-            """2015 is the first year in the non-historical data, so if your base year is past that, have to draw from the 
+            """2015 is the first year in the non-historical data, so if your base year is past that, have to draw from the
             projections. We assumeed SSP2 represents years before the "policy scenarios" start."""
 
             output_dir = os.path.join(p.cur_dir, 'baseline', str(base_year))
@@ -186,7 +187,7 @@ def luh2_as_seals7_proportion(p):
                     arrays.append(a)
                 ndv = hb.get_ndv_from_path(os.path.join(luh_dir, luh_label + '.tif'))
                 # LEARNING POINT: in the np.sum list comprehension, need an extra , 0 to indicate that it is a sum ALONG the list comprehensions' dimension. Otherwise, this will return a singleton sum.
-                
+
                 sum_of_class_proportions = np.zeros(a.shape)
                 for a in arrays:
                     sum_of_class_proportions += a
@@ -246,4 +247,3 @@ def seals7_difference_from_base_year(p):
 
                     difference_path = os.path.join(difference_dir, file_root + '_' + str(scenario_year) + '_' + str(p.base_year) + '_ha_difference.tif')
                     difference = hb.save_array_as_geotiff(difference_array, difference_path, p.coarse_aoi_ha_per_cell_path)
-

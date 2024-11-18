@@ -1,12 +1,13 @@
+import multiprocessing
 import os
+
+import geopandas as gpd
 import hazelbean as hb
 import numpy as np
 import pandas as pd
-import multiprocessing
 from matplotlib import pyplot as plt
-import geopandas as gpd
 
-import seals_utils
+from . import seals_utils
 
 L = hb.get_logger()
 
@@ -630,8 +631,8 @@ def calc_observed_lulc_change(passed_p=None):
         if p.prepare_lulc_make_pngs:
             seals_utils.prepare_lulc_pngs()
 
-            from matplotlib.mlab import bivariate_normal
             from matplotlib import colors as colors
+            from matplotlib.mlab import bivariate_normal
             fig, ax = plt.subplots()
             fig.set_size_inches(10, 8)
 

@@ -1,31 +1,31 @@
 """MAJOR Reversion back to 0_2_8 because the WB project really needed to be chunk based rather than vector based."""
 
 import collections
-from collections import OrderedDict
-import logging
-import os
 import copy
-import warnings
-import numpy as np
-import hazelbean as hb
-import scipy.ndimage
-from osgeo import gdal
-
+import logging
+import math
 import multiprocessing
-from matplotlib import pyplot as plt
+import os
+import time
+import warnings
+from collections import OrderedDict
+
+import hazelbean as hb
+import hazelbean.pyramids
 import matplotlib
 import matplotlib.gridspec as gridspec
-from mpl_toolkits.axes_grid1.axes_divider import make_axes_locatable
-
-import hazelbean.pyramids
-import seals_utils
+import numpy as np
 import pandas as pd
-import time
-import math
+import scipy.ndimage
+from matplotlib import pyplot as plt
+from mpl_toolkits.axes_grid1.axes_divider import make_axes_locatable
+from osgeo import gdal
+
+from . import seals_utils
 
 try:
-    from setuptools import setup
     from setuptools import Extension
+    from setuptools import setup
 except ImportError:
     from distutils.core import setup
     from distutils.extension import Extension
@@ -44,10 +44,11 @@ if recompile_cython:
     if returned:
         raise NameError('Cythonization failed.')
     os.chdir(old_cwd)
-import seals_cython_functions as seals_cython_functions
-from seals_cython_functions import calibrate as calibrate
-from seals_cython_functions import calibrate_exclusive
-from seals_cython_functions import calibrate_from_change_matrix
+from . import seals_cython_functions as seals_cython_functions
+from .fromseals_cython_functions import calibrate as calibrate
+from .fromseals_cython_functions import calibrate_exclusive
+from .fromseals_cython_functions import calibrate_from_change_matrix
+
 
 def initialize_paths(p):
     p.combined_block_lists_paths = None # This will be smartly determined in either calibration or allocation
@@ -3179,7 +3180,3 @@ def prepare_lulc_make_pngs(p):
         hb.full_show_array(full_change_matrix_no_diagonal, output_path=full_change_matrix_no_diagonal_png_path, cbar_label='Number of changes from class R to class C per tile', title='Change matrix mosaic',
                            num_cbar_ticks=2, vmin=0, vmid=vmax / 10.0, vmax=vmax, color_scheme='ylgnbu')
     return p
-
-
-
-

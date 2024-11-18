@@ -1,4 +1,5 @@
 import os
+
 import hazelbean as hb
 
 main = ''
@@ -76,10 +77,10 @@ if __name__ == '__main__':
            'from script ' +  p.calling_script + '\n    '
            'with base_data set at ' + p.base_data_dir)
 
-    import seals_main
-    import seals_generate_base_data
-    import seals_process_luh2
-    import config
+    from . import config
+    from . import seals_generate_base_data
+    from . import seals_main
+    from . import seals_process_luh2
 
     # initialize and set all basic variables. Sadly this is still needed even for a SEALS run until it's extracted.
     seals_main.initialize_paths(p)
@@ -460,5 +461,3 @@ if __name__ == '__main__':
 
 
     p.execute()
-
-
