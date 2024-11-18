@@ -6,8 +6,8 @@ from Cython.Distutils import build_ext
 
 ext_modules = [
     Extension(
-        'seals.seals_cython_functions',
-        ['seals/seals_cython_functions.pyx'],
+        'sealsmodel.seals_cython_functions',
+        ['sealsmodel/seals_cython_functions.pyx'],
     )
 ]
 
@@ -16,13 +16,13 @@ returned = setup(
         "gdal",
         "hazelbean",
         "matplotlib",
-        "numpy",
+        "numpy<2",
         "pandas",
         "rasterio",
         "scipy",
     ],
-    name='seals',
-    packages=["seals"],
+    name='sealsmodel',
+    packages=["sealsmodel"],
     include_dirs=[numpy.get_include()],
     cmdclass={'build_ext': build_ext},
     ext_modules=ext_modules

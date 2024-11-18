@@ -3,20 +3,29 @@
 # Build the InVEST wheel in a separate container stage
 FROM debian:12.2 as build
 ARG SEALS_VERSION="main"
-ARG SEALS_REPO="phargogh/seals"
+ARG SEALS_REPO="phargogh/sealsmodel"
 RUN apt update && apt install -y python3 python3-dev python3-pip python3-build build-essential git python3.11-venv
 RUN cd / && \
+        python3 -m venv --system-site-packages ./sealsmodel-env && \
+        ./sealsmodel-env/bin/python3 -m pip install "numpy<2" "cython<3" && \
         git clone https://github.com/${SEALS_REPO}.git && \
         cd $(basename ${SEALS_REPO}) && \
         git checkout ${SEALS_VERSION} && \
-        python3 -m build
+        ../sealsmodel-env/bin/python3 -m build
+
+RUN cd / && \
+        git clone https://github.com/jandrewjohnson/hazelbean_dev.git && \
+        cd hazelbean_dev && \
+        git checkout main && \
+        ../sealsmodel-env/bin/python3 -m build
 
 # Create the container for distribution that has runtime dependencies.
 FROM mambaorg/micromamba:1.5.0-bookworm-slim
 # Python version should match the version used in stage 1.
 # If we update the stage 1 debian version, also update this python version
 ARG PYTHON_VERSION="3.11"
-COPY --from=build /seals/dist/*.whl /tmp/
+COPY --from=build /sealsmodel/dist/*.whl /tmp/
+COPY --from=build /hazelbean_dev/dist/*.whl /tmp/
 
 # The environment.yml file will be built during github actions.
 COPY --chown=$MAMBA_USER:$MAMBA_USER env.yml /tmp/environment.yml
